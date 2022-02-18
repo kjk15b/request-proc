@@ -1,4 +1,3 @@
-from email import feedparser
 import sys
 import serial
 
