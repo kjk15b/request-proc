@@ -3,7 +3,7 @@ from lib.Common.USB.Driver import Driver
 import requests
 
 class Processor():
-    def __init__(self, deviceID, host="http://localhost", port="8080"):
+    def __init__(self, deviceID, host="http://localhost", port="8080", upperLimit=30):
         self.udev = Driver(deviceID)
         self.host = host
         self.port = port
@@ -12,7 +12,7 @@ class Processor():
                            "LR" : list(),
                            "LL" : list()}
         self.keys = ["UR", "UL", "LR", "LL"]
-        self.upperLimit = 30
+        self.upperLimit = upperLimit
     
     def getHost(self):
         return self.host
@@ -20,19 +20,21 @@ class Processor():
         return self.port
 
     def deliver(self):
+        delivered = False
         for key in self.dataStream.keys():
             for i in range(len(self.dataStream[key])):
                 url = self.getHost()+":"+self.getPort()+"/{}/{}".format(key, self.dataStream[key][i])
                 try:
                     feedBack = requests.post(url)
                     print("FEEDBACK={}".format(feedBack))
-                    self.dataStream[key].pop(i) # pop the data we just sent
+                    delivered = True
                 except:
                     print("Could not deliver to: {}".format(url))
-                    if len(self.dataStream[key]) > self.upperLimit:
-                        print("Upper limit reached [{}], purging SEN={}, DATA={}".format(self.upperLimit,
-                        key, self.dataStream[key][i]))
-                        self.dataStream[key].pop(i)
+                    delivered = False
+        if delivered:
+            for key in self.dataStream.keys():
+                for i in range(len(self.dataStream[key])):
+                    self.dataStream[key].pop(i)
 
     def process(self):
         data = self.udev.readLine()
@@ -41,6 +43,10 @@ class Processor():
             for i in range(len(data)):
                 print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
                 self.dataStream[self.keys[i]].append(data[i])
+                if len(self.dataStream[self.keys[i]]) > self.upperLimit:
+                    print("Upper limit [{}] reached, purging {} data {}".format(self.upperLimit,
+                    self.keys[i], self.dataStream[self.keys[i]][0]))
+                    self.dataStream[self.keys[i]].pop(0)
             self.deliver()
 
 
