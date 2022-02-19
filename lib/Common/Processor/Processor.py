@@ -52,9 +52,9 @@ class Processor():
         backupStream = self.dataStream # swap streams to be sure we clean out things
         for key in self.dataStream.keys():
             for i in range(len(self.dataStream[key])):
-                url = "http://"+self.getHost()+":"+self.getPort()+"/{}/{}".format(key, self.dataStream[key][i])
+                url = "http://"+self.getHost()+":"+self.getPort()+"/{}".format(key)
                 try:
-                    feedBack = requests.post(url)
+                    feedBack = requests.post(url, data={'data' : self.dataStream[key][i]})
                     print("FEEDBACK={}".format(feedBack))
                     backupStream[key].pop(i)
                 except:
