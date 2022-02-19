@@ -15,7 +15,8 @@ class Processor():
         data = self.udev.readLine()
         data = data.split(",")
         if len(data) == 4:
-            print(data)
+            for i in range(len(data)):
+                print("READ: {}, VALUE: {}".format(self.keys[i], data[i]))
 
     def cleanUp(self):
         return self.udev.closeConn()
