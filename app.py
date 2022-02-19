@@ -1,5 +1,4 @@
 import sys
-from turtle import up
 from lib.Common.Processor.Processor import Processor
 import time
 
