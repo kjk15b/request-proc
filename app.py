@@ -1,10 +1,10 @@
 import sys
 from lib.Common.Processor.Processor import Processor
+import time
 
 if __name__ == '__main__':
     processor = Processor(sys.argv[1])
-    countDown = 5
-    while countDown > 0 :
+    while True :
         processor.process()
-        countDown -= 1
+        time.sleep(0.1)
     processor.cleanUp()
