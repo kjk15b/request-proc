@@ -12,7 +12,7 @@ class Processor():
                            "LR" : list(),
                            "LL" : list()}
         self.keys = ["UR", "UL", "LR", "LL"]
-        self.upperLimit = upperLimit
+        self.upperLimit = int(upperLimit)
     
     def getHost(self):
         return self.host
