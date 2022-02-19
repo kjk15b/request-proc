@@ -1,4 +1,4 @@
-from modules.Common.USB import Driver
+from lib.Common.USB import Driver
 
 class Processor():
     def __init__(self, deviceID, endpoint="http://localhost", port="8080"):
