@@ -3,7 +3,7 @@ from lib.Common.USB.Driver import Driver
 import requests
 
 class Processor():
-    def __init__(self, deviceID, host="http://localhost", port="8080", upperLimit=30):
+    def __init__(self, deviceID, host="localhost", port="8080", upperLimit=30):
         self.udev = Driver(deviceID)
         self.host = host
         self.port = port
@@ -52,7 +52,7 @@ class Processor():
         backupStream = self.dataStream # swap streams to be sure we clean out things
         for key in self.dataStream.keys():
             for i in range(len(self.dataStream[key])):
-                url = self.getHost()+":"+self.getPort()+"/{}/{}".format(key, self.dataStream[key][i])
+                url = "http://"+self.getHost()+":"+self.getPort()+"/{}/{}".format(key, self.dataStream[key][i])
                 try:
                     feedBack = requests.post(url)
                     print("FEEDBACK={}".format(feedBack))
