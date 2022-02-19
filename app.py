@@ -1,8 +1,7 @@
 import sys
-import serial
+from modules.Common.Processor import Processor
 
 if __name__ == '__main__':
-    conn = serial.Serial(sys.argv[1], baudrate=9600)
-    feedBack = conn.readline()
-    print("Found={}".format(feedBack))
-    conn.close()
+    processor = Processor(sys.argv[1])
+    processor.process()
+    processor.cleanUp()
