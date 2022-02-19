@@ -5,9 +5,17 @@ class Processor():
         self.udev = Driver(deviceID)
         self.endpoint = endpoint
         self.port = port
-
+        self.dataStream = {"UR" : list(),
+                           "UL" : list(),
+                           "LR" : list(),
+                           "LL" : list()}
+        self.keys = ["UR", "UL", "LR", "LL"]
+    
     def process(self):
-        print(self.udev.readLine())
+        data = self.udev.readLine()
+        data = data.split(",")
+        if len(data) == 4:
+            print(data)
 
     def cleanUp(self):
         return self.udev.closeConn()
