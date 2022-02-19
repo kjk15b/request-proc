@@ -13,11 +13,21 @@ class Processor():
                            "LL" : list()}
         self.keys = ["UR", "UL", "LR", "LL"]
         self.upperLimit = int(upperLimit)
+        self.thresholds = {"UR" : 1022,
+                           "UL" : 1015,
+                           "LR" : 1021,
+                           "LL" : 1022}
     
     def getHost(self):
         return self.host
     def getPort(self):
         return self.port
+
+    def hitDetected(self, data):
+        for i in range(len(data)):
+            if data[i] <= self.thresholds[self.keys[i]]:
+                return True
+        return False
 
     def deliver(self):
         delivered = False
@@ -42,7 +52,8 @@ class Processor():
         if len(data) == 4:
             for i in range(len(data)):
                 print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
-                self.dataStream[self.keys[i]].append(data[i])
+                if self.hitDetected():
+                    self.dataStream[self.keys[i]].append(data[i])
                 if len(self.dataStream[self.keys[i]]) > self.upperLimit:
                     print("Upper limit [{}] reached, purging {} data {}".format(self.upperLimit,
                     self.keys[i], self.dataStream[self.keys[i]][0]))
