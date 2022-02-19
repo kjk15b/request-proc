@@ -1,5 +1,5 @@
 import sys
-from lib.Common.Processor import Processor
+from lib.Common.Processor.Processor import Processor
 
 if __name__ == '__main__':
     processor = Processor(sys.argv[1])

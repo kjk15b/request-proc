@@ -9,7 +9,14 @@ class Driver():
             print("Error connecting to serial device: {}".format(deviceID))
 
     def readLine(self):
-        return self.conn.readline().encode('utf-8')
-
+        try:
+            return self.conn.readline().encode('utf-8')
+        except:
+            print("Error reading line")
+            return -1
     def closeConn(self):
-        return self.conn.close()
+        try:
+            return self.conn.close()
+        except:
+            print("Error closing device")
+            return -1
