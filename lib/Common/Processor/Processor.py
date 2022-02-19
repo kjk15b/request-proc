@@ -87,14 +87,17 @@ class Processor():
     '''
     def process(self):
         data = self.udev.readLine()
-        data = data.split(",")
-        if len(data) == 4:
-            if self.hitDetected(data):
-                for i in range(len(data)):
-                    print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
-                    self.dataStream[self.keys[i]].append(data[i])
-            self.deliver()
-            self.cleanUpStream()
+        try:
+            data = data.split(",")
+            if len(data) == 4:
+                if self.hitDetected(data):
+                    for i in range(len(data)):
+                        print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
+                        self.dataStream[self.keys[i]].append(data[i])
+                self.deliver()
+                self.cleanUpStream()
+        except:
+            print("Error trying to split int object... skipping")
 
     '''
     cleanUp
