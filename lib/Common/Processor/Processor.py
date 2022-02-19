@@ -16,7 +16,7 @@ class Processor():
         data = data.split(",")
         if len(data) == 4:
             for i in range(len(data)):
-                print("READ: {}, VALUE: {}".format(self.keys[i], data[i]))
+                print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
 
     def cleanUp(self):
         return self.udev.closeConn()
