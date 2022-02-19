@@ -64,7 +64,7 @@ class Processor():
                         \tHeaders={}\n \
                         \tElapsed={}\n \
                         \tRequest={}".format(feedBack.status_code, feedBack.headers,
-                        feedBack.elapsed, feedBack.request))
+                        feedBack.elapsed, feedBack.request.body))
                     backupStream[key].pop(i)
                 except:
                     print("Could not deliver to: {}".format(url))
