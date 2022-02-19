@@ -10,7 +10,7 @@ class Driver():
 
     def readLine(self):
         try:
-            return self.conn.readall().decode('utf-8')
+            return str(self.conn.readline().decode('utf-8'))
         except:
             print("Error reading line")
             return -1
