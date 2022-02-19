@@ -2,6 +2,6 @@ ard=$(dmesg | grep tty | grep ACM | tr -s ' ' | cut -d ' ' -f 5 | tr -s ':' | cu
 fullArd="/dev/$ard" ;
 echo $fullArd ;
 
-python app.py $fullArd
+python app.py $fullArd "web-dev" "5050" 5
 
 
