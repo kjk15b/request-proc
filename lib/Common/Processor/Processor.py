@@ -26,20 +26,20 @@ class Processor():
                 try:
                     feedBack = requests.post(url)
                     print("FEEDBACK={}".format(feedBack))
-                    self.dataStream[key][i].pop(i) # pop the data we just sent
+                    self.dataStream[key].pop(i) # pop the data we just sent
                 except:
                     print("Could not deliver to: {}".format(url))
                     if len(self.dataStream[key]) > self.upperLimit:
                         print("Upper limit reached [{}], purging SEN={}, DATA={}".format(self.upperLimit,
                         key, self.dataStream[key][i]))
-                        self.dataStream[key][i].pop(i)
+                        self.dataStream[key].pop(i)
 
     def process(self):
         data = self.udev.readLine()
         data = data.split(",")
         if len(data) == 4:
             for i in range(len(data)):
-                #print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
+                print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
                 self.dataStream[self.keys[i]].append(data[i])
             self.deliver()
 
