@@ -46,19 +46,23 @@ class Processor():
                 for i in range(len(self.dataStream[key])):
                     self.dataStream[key].pop(i)
 
+    def cleanUpStream(self):
+        for key in self.dataStream.keys():
+            if len(self.dataStream[key]) > self.upperLimit:
+                print("Upper limit [{}] reached, purging {} data {}".format(self.upperLimit,
+                        key, self.dataStream[key][0]))
+                self.dataStream[key].pop(0)
+
     def process(self):
         data = self.udev.readLine()
         data = data.split(",")
         if len(data) == 4:
-            for i in range(len(data)):
-                print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
-                if self.hitDetected():
+            if self.hitDetected(data):
+                for i in range(len(data)):
+                    print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
                     self.dataStream[self.keys[i]].append(data[i])
-                if len(self.dataStream[self.keys[i]]) > self.upperLimit:
-                    print("Upper limit [{}] reached, purging {} data {}".format(self.upperLimit,
-                    self.keys[i], self.dataStream[self.keys[i]][0]))
-                    self.dataStream[self.keys[i]].pop(0)
             self.deliver()
+            self.cleanUpStream()
 
 
     def cleanUp(self):
