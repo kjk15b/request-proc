@@ -25,7 +25,7 @@ class Processor():
 
     def hitDetected(self, data):
         for i in range(len(data)):
-            if data[i] <= self.thresholds[self.keys[i]]:
+            if int(data[i]) <= self.thresholds[self.keys[i]]:
                 return True
         return False
 
