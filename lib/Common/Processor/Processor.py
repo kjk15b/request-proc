@@ -78,12 +78,12 @@ class Processor():
     purge delivered contents and swap streams
     '''
     def deliver(self):
-        backupStream = self.dataStream # swap streams to be sure we clean out things
-        for key in self.dataStream.keys():
-            for i in range(len(self.dataStream[key])):
+        backupStream = self.outStream # swap streams to be sure we clean out things
+        for key in self.outStream.keys():
+            for i in range(len(self.outStream[key])):
                 url = "http://"+self.getHost()+":"+self.getPort()+"/data/ingest/{}".format(key)
                 try:
-                    feedBack = requests.post(url, data={'data' : self.dataStream[key][i]})
+                    feedBack = requests.post(url, data={'data' : self.outStream[key][i]})
                     feedBack.elapsed
                     feedBack.headers
                     feedBack.request
@@ -97,7 +97,7 @@ class Processor():
                     backupStream[key].pop(i)
                 except:
                     print("Could not deliver to: {}".format(url))
-        self.dataStream = backupStream # replace streams
+        self.outStream = backupStream # replace streams
 
     '''
     cleanUpStream
