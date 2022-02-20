@@ -56,7 +56,8 @@ class Processor():
             if utcNow - self.timeStart == 0:
                 theFreq = 0
             else:
-                theFreq = hitsCounted / (utcNow - self.timeStart)
+                theFreq = round(hitsCounted / (utcNow - self.timeStart), 5)
+            self.outStream[key].append(theFreq)
             print("Frequency for sensor {} {} Hz".format(key, theFreq))
 
     '''
@@ -108,6 +109,10 @@ class Processor():
                 print("Upper limit [{}] reached, purging {} data {}".format(self.upperLimit,
                         key, self.dataStream[key][0]))
                 self.dataStream[key].pop(0)
+            if len(self.outStream[key]) > self.upperLimit:
+                print("Upper limit [{}] reached, purging {} data {}".format(self.upperLimit,
+                        key, self.outStream[key][0]))
+                self.outStream[key].pop(0)
 
     '''
     process
