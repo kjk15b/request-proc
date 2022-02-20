@@ -1,6 +1,6 @@
-from email import feedparser
 from lib.Common.USB.Driver import Driver
 import requests
+import datetime
 
 class Processor():
     def __init__(self, deviceID, host="localhost", port="8080", upperLimit=30):
@@ -11,12 +11,19 @@ class Processor():
                            "UL" : list(),
                            "LR" : list(),
                            "LL" : list()}
+        self.outStream = {"UR" : list(),
+                           "UL" : list(),
+                           "LR" : list(),
+                           "LL" : list()}
         self.keys = ["UR", "UL", "LR", "LL"]
         self.upperLimit = int(upperLimit)
         self.thresholds = {"UR" : 1022,
                            "UL" : 1015,
                            "LR" : 1021,
                            "LL" : 1022}
+        self.timeStart = datetime.datetime.utcnow()
+        self.timeStart = self.timeStart.timestamp()
+
     '''
     getHost
     return host
@@ -31,6 +38,27 @@ class Processor():
     def getPort(self):
         return self.port
     
+    '''
+    findFrequency
+    loop over lists of raw data,
+    count how many are below threshold
+    divide by time-delta
+    '''
+    def findFrequency(self):
+        for key in self.dataStream.keys():
+            hitsCounted = 0
+            for i in range(len(self.dataStream[key])):
+                if self.dataStream[key][i] <= self.thresholds[key]:
+                    hitsCounted += 1
+            utcNow = datetime.datetime.utcnow()
+            utcNow = utcNow.timestamp()
+            theFreq = None
+            if utcNow - self.timeStart == 0:
+                theFreq = 0
+            else:
+                theFreq = hitsCounted / (utcNow - self.timeStart)
+            print("Frequency for sensor {} {} Hz".format(key, theFreq))
+
     '''
     hitDetected
     Check if any of data reached their threshold,
@@ -94,6 +122,7 @@ class Processor():
                     for i in range(len(data)):
                         print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
                         self.dataStream[self.keys[i]].append(data[i])
+                        self.findFrequency()
                 self.deliver()
                 self.cleanUpStream()
         except:
