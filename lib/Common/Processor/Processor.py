@@ -127,11 +127,11 @@ class Processor():
                     for i in range(len(data)):
                         print("READ: {}, VALUE: int({})".format(self.keys[i], int(data[i])))
                         self.dataStream[self.keys[i]].append(data[i])
+                self.findFrequency()
                 self.deliver()
                 self.cleanUpStream()
         except:
             print("Error trying to split int object... skipping")
-        self.findFrequency()
     '''
     cleanUp
     close the USB connection
