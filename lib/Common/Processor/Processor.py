@@ -48,7 +48,7 @@ class Processor():
         for key in self.dataStream.keys():
             hitsCounted = 0
             for i in range(len(self.dataStream[key])):
-                if self.dataStream[key][i] <= self.thresholds[key]:
+                if int(self.dataStream[key][i]) <= self.thresholds[key]:
                     hitsCounted += 1
             utcNow = datetime.datetime.utcnow()
             utcNow = utcNow.timestamp()
