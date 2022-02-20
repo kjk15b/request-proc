@@ -84,16 +84,14 @@ class Processor():
                 url = "http://"+self.getHost()+":"+self.getPort()+"/data/ingest/{}".format(key)
                 try:
                     feedBack = requests.post(url, data={'data' : self.outStream[key][i]})
-                    feedBack.elapsed
-                    feedBack.headers
-                    feedBack.request
-                    feedBack.status_code
+                    '''
                     print("FEEDBACK=\n \
                         \tStatus={}\n \
                         \tHeaders={}\n \
                         \tElapsed={}\n \
                         \tRequest={}".format(feedBack.status_code, feedBack.headers,
                         feedBack.elapsed, feedBack.request.body))
+                    '''
                     backupStream[key].pop(i)
                 except:
                     print("Could not deliver to: {}".format(url))
